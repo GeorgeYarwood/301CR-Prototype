@@ -12,6 +12,11 @@ public class GunController : MonoBehaviour
     //Gun model that we will manipulate
     public GameObject gunModel;
 
+    //Time it takes to fire a shot
+    float shootTime = .5f;
+
+    bool aiming = false;
+    bool canShoot = true;
     
     //Guns animator
     public Animator gunAnim;
@@ -20,22 +25,46 @@ public class GunController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //Get gun model
+        gunModel = this.gameObject;
+
+        //Get animator
+        gunAnim = this.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        //Aim down sight it we left click
-        if (Input.GetMouseButton(0))
+        //Aim down sight it we right click
+        if (Input.GetMouseButton(1) && !aiming)
         {
             gunAnim.SetTrigger("aimUp");
+            aiming = true;
         }
-        else if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(1) && aiming)
         {
             gunAnim.SetTrigger("aimDown");
+            aiming = false;
+
         }
 
+        if (Input.GetMouseButton(0) && canShoot) 
+        {
+            gunAnim.SetTrigger("fire");
+            StartCoroutine(shootWait());
+        }
+        if (Input.GetKey("r")) 
+        {
+            gunAnim.SetTrigger("reload");
+        }
+
+    }
+
+    IEnumerator shootWait() 
+    {
+        canShoot = false;
+        yield return new WaitForSeconds(shootTime);
+        canShoot = true;
     }
 }
