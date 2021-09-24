@@ -20,6 +20,7 @@ public class EnemySpawner : MonoBehaviour
 
     static public int currRound;
 
+    bool running= false;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +30,7 @@ public class EnemySpawner : MonoBehaviour
         currRound = 1;
 
         
-        maxEnemies = 4;
+        maxEnemies = 2;
     }
 
     // Update is called once per frame
@@ -55,17 +56,13 @@ public class EnemySpawner : MonoBehaviour
             //If all enemies have been killed
             if (aliveEnemies.Length <= 0) 
             {
-                //Enemies scale with round
-                if (currRound > 1)
-                {
-                    maxEnemies += (currRound * 2);
 
+
+                if (!running) 
+                {
+                    StartCoroutine(nextRnd());
 
                 }
-
-                //Next round
-                currRound += 1;
-                StartCoroutine(nextRnd());
             }
         }
 
@@ -74,16 +71,35 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator nextRnd()
     {
+        canSpawn = false;
+        running = true;
         yield return new WaitForSeconds(3);
-     
         //Reset list
         enemies.Clear();
+        //Next round
+        currRound += 1;
+        maxEnemies += (currRound * 2);
+        running = false;
+        canSpawn = true;
     }
+
+    
 
     IEnumerator spawnWait() 
     {
         canSpawn = false;
-        yield return new WaitForSeconds(spawnTimer + (Random.Range(1,5)));
+        float hack = (Random.Range(1, 5) - currRound / 2);
+        if(hack >= 0) 
+        {
+            yield return new WaitForSeconds(spawnTimer + hack);
+
+        }
+        else 
+        {
+            yield return new WaitForSeconds(spawnTimer
+                );
+
+        }
         canSpawn = true;
     }
 

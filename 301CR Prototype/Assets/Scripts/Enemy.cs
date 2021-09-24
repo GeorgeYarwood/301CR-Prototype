@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
     States currState;
 
     //Distance player must be in to be attacked by enemy
-    float attackdist = 5f;
+    float attackdist = 1f;
     
 
     // Start is called before the first frame update

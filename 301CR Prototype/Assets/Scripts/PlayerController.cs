@@ -11,10 +11,10 @@ public class PlayerController : MonoBehaviour
     public static GameObject playerModel;
 
     //Speed player moves at
-    float moveSpeed = 20f;
+    float moveSpeed = 25f;
 
     //Force applied when jumping
-    float jumpSpeed = 700f;
+    float jumpSpeed = 1200f;
 
     //Jump cooldown timer
     float jumpCooldown = 1.2f;

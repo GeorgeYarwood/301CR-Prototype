@@ -104,14 +104,15 @@ public class GunController : MonoBehaviour
         }
 
         
-        if (Input.GetKey("r")) 
+        if (Input.GetKeyDown("r")) 
         {
             gunAnim.SetTrigger("reload");
-            StartCoroutine(waitReloadPlay());
+            reloadAudio.Play();
+
             currAmmo = maxAmmo;
         }
 
-        if (Input.GetKey("q")) 
+        if (Input.GetKeyDown("q")) 
         {
             //Play audio
             elecAudio.Play();
@@ -122,12 +123,8 @@ public class GunController : MonoBehaviour
     }
 
 
-    IEnumerator waitReloadPlay() 
-    {
-        yield return new WaitForSeconds(.7f);
-        reloadAudio.Play();
-
-    }
+ 
+    
 
     void killEnemies() 
     {
