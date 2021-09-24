@@ -47,7 +47,7 @@ public class GunController : MonoBehaviour
     {
 
        
-        if (Input.GetMouseButtonDown(0)) 
+        if (Input.GetMouseButtonDown(0) && !gunAnim.GetCurrentAnimatorStateInfo(0).IsName("gunFire"))
         {
             gunAnim.SetTrigger("fire");
 

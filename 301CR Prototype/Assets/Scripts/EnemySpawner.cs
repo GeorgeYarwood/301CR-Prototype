@@ -40,7 +40,7 @@ public class EnemySpawner : MonoBehaviour
     IEnumerator spawnWait() 
     {
         canSpawn = false;
-        yield return new WaitForSeconds(spawnTimer);
+        yield return new WaitForSeconds(spawnTimer - Random.Range(2,5));
         canSpawn = true;
     }
 

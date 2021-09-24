@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
     enum States  {Walking, Attacking, Dead };
 
     //Stats for gun
-    public float damage = 0.05f;
+    public float damage = 0.1f;
     
 
     
@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
 
     States currState;
 
-    //Distance player must be in to be seen by enemy
+    //Distance player must be in to be attacked by enemy
     float attackdist = 5f;
     
 
@@ -124,8 +124,10 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if(collision.transform.tag == "Player" && currState == States.Attacking && anim.GetCurrentAnimatorStateInfo(0).IsName("enemyAttack") && canHit) 
+        if(collision.transform.tag == "Player" && anim.GetCurrentAnimatorStateInfo(0).IsName("enemyAttack") && canHit) 
         {
+            currState = States.Attacking; 
+
             int randNum = Random.Range(1, 2);
             //Less chance of hit doing dmg to player
             if (randNum == 1)
