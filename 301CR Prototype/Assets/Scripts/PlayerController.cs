@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     float moveSpeed = 20f;
 
     //Force applied when jumping
-    float jumpSpeed = 400f;
+    float jumpSpeed = 700f;
 
     //Jump cooldown timer
     float jumpCooldown = 1.2f;
@@ -32,15 +32,17 @@ public class PlayerController : MonoBehaviour
     //Last mosue position
     Vector3 lastMouse;
 
-    //If player is in the truck
-    static public bool isDriving;
+    //health Text
+    public Text healthTxt;
+
+   
 
     //Cooldown for jump
     bool canJump;
 
+    public static float playerHealth = 100;
 
-
-    
+    public static int points;
 
     // Start is called before the first frame update
     void Start()
@@ -62,11 +64,12 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate() 
     {
-       
-            ///Keyboard movements
-            ///
-            //Forward/Backward
-            if (Input.GetKey("w"))
+        //For debugging
+        Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 3.5f, transform.position.z), transform.forward, Color.green);
+        ///Keyboard movements
+        ///
+        //Forward/Backward
+        if (Input.GetKey("w"))
             {
                 playerRB.AddForce(playerRB.transform.forward * moveSpeed);
             }
@@ -134,7 +137,13 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-       
+        healthTxt.text = playerHealth.ToString();
+    }
+
+    public void takeDmg(float dmg)
+    {
+        playerHealth -= dmg;
+
     }
 
    

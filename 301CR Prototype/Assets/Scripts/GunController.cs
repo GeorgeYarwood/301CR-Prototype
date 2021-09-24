@@ -52,7 +52,21 @@ public class GunController : MonoBehaviour
         if (Input.GetMouseButton(0) && canShoot) 
         {
             gunAnim.SetTrigger("fire");
-            StartCoroutine(shootWait());
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            //If we hit
+            if (Physics.Raycast(ray, out hit, 50f))
+            {
+                if (hit.transform.tag == "enemy")
+                {
+                    hit.transform.gameObject.SetActive(false);
+                    Destroy(hit.transform.gameObject);
+                }
+            }
+
+                StartCoroutine(shootWait());
         }
         if (Input.GetKey("r")) 
         {

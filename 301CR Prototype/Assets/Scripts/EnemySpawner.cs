@@ -28,7 +28,9 @@ public class EnemySpawner : MonoBehaviour
     {
         if(canSpawn && enemies.Count < maxEnemies) 
         {
-            enemies.Add(Instantiate(enemyGO, enemySpawn.transform));
+            GameObject clone = Instantiate(enemyGO, enemySpawn.transform);
+            clone.tag = "enemy";
+            enemies.Add(clone);
             StartCoroutine(spawnWait());
         }
 
