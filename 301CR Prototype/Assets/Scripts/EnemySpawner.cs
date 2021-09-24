@@ -12,10 +12,10 @@ public class EnemySpawner : MonoBehaviour
     //Add every enemy spawned to this list
     List<GameObject> enemies = new List<GameObject>();
 
-    float spawnTimer = 2f;
+    float spawnTimer = 15;
     bool canSpawn;
 
-    int maxEnemies = 50;
+    int maxEnemies = 15;
 
     // Start is called before the first frame update
     void Start()

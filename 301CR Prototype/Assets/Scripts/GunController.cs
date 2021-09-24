@@ -7,6 +7,9 @@ public class GunController : MonoBehaviour
 {
     //Projectile gun will fire
     public GameObject bulletProj;
+
+    //Spawn point for projectile
+    public Transform bulletSpawn;
     //Force the bullet will be fired at
     float shootForce = 10f;
     //Gun model that we will manipulate
@@ -21,6 +24,9 @@ public class GunController : MonoBehaviour
     //Guns animator
     public Animator gunAnim;
 
+    //Audio source
+    public AudioSource gunAudio;
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,28 +36,28 @@ public class GunController : MonoBehaviour
 
         //Get animator
         gunAnim = this.GetComponent<Animator>();
+
+        //Get audio source
+        gunAudio = this.GetComponent<AudioSource>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        //Aim down sight it we right click
-        if (Input.GetMouseButton(1) && !aiming)
-        {
-            gunAnim.SetTrigger("aimUp");
-            aiming = true;
-        }
-        else if (Input.GetMouseButtonUp(1) && aiming)
-        {
-            gunAnim.SetTrigger("aimDown");
-            aiming = false;
-
-        }
-
-        if (Input.GetMouseButton(0) && canShoot) 
+       
+        if (Input.GetMouseButtonDown(0)) 
         {
             gunAnim.SetTrigger("fire");
+
+            gunAudio.pitch = Random.Range(0.7f, 1f);
+            gunAudio.Play();
+
+            GameObject bulletClone = Instantiate(bulletProj, bulletSpawn.transform);
+            bulletClone.GetComponent<Rigidbody>().AddForce(bulletSpawn.transform.forward * 500);
+            bulletClone.transform.parent = null;
+            Destroy(bulletClone, 0.5f);
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -61,8 +67,8 @@ public class GunController : MonoBehaviour
             {
                 if (hit.transform.tag == "enemy")
                 {
-                    hit.transform.gameObject.SetActive(false);
-                    Destroy(hit.transform.gameObject);
+                    //hit.transform.gameObject.SetActive(false);
+                    Destroy(hit.transform.gameObject, 0.5f);
                 }
             }
 
