@@ -27,13 +27,15 @@ public class PlayerController : MonoBehaviour
     float rotationY = 0;
 
     //Camera sensitivity
-    float sens = 3f;
+    float sens = 4;
 
     //Last mosue position
     Vector3 lastMouse;
 
     //health Text
     public Text healthTxt;
+    //Round text
+    public Text roundTxt;
 
    
 
@@ -137,7 +139,10 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        healthTxt.text = playerHealth.ToString();
+        healthTxt.text = "HLTH " + playerHealth.ToString();
+
+        //Update round txt
+        roundTxt.text = "RND: " + EnemySpawner.currRound.ToString();
     }
 
     public void takeDmg(float dmg)

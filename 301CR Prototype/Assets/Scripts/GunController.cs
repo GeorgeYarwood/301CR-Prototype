@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class GunController : MonoBehaviour
@@ -27,9 +28,19 @@ public class GunController : MonoBehaviour
     //Audio source
     public AudioSource gunAudio;
     public AudioSource elecAudio;
+    public AudioSource reloadAudio;
+    public AudioSource errAudio;
+
+    public GameObject reloadMsg;
 
     public GameObject elecImg1;
     public GameObject elecImg2;
+
+    int maxAmmo = 7;
+    int currAmmo;
+
+    public Text ammoTxt;
+
 
     // Start is called before the first frame update
     void Start()
@@ -40,20 +51,31 @@ public class GunController : MonoBehaviour
         //Get animator
         gunAnim = this.GetComponent<Animator>();
 
-       
-        
+
+        currAmmo = maxAmmo;
     }
 
     // Update is called once per frame
     void Update()
     {
+        ammoTxt.text = "AMO: " + currAmmo.ToString();
 
-       
-        if (Input.GetMouseButtonDown(0) && !gunAnim.GetCurrentAnimatorStateInfo(0).IsName("gunFire"))
+        if(currAmmo <= 0) 
         {
+            reloadMsg.SetActive(true);
+        }
+        else 
+        {
+            reloadMsg.SetActive(false);
+
+        }
+        if (Input.GetMouseButtonDown(0) && !gunAnim.GetCurrentAnimatorStateInfo(0).IsName("gunFire") && !gunAnim.GetCurrentAnimatorStateInfo(0).IsName("gunReload")  && currAmmo > 0)
+        {
+            currAmmo -= 1;
+
             gunAnim.SetTrigger("fire");
 
-            gunAudio.pitch = Random.Range(0.7f, 1f);
+            gunAudio.pitch = Random.Range(0.4f, 1.2f);
             gunAudio.Play();
 
             GameObject bulletClone = Instantiate(bulletProj, bulletSpawn.transform);
@@ -76,9 +98,17 @@ public class GunController : MonoBehaviour
 
                 StartCoroutine(shootWait());
         }
+        else if(Input.GetMouseButtonDown(0) && currAmmo <= 0) 
+        {
+            errAudio.Play();
+        }
+
+        
         if (Input.GetKey("r")) 
         {
             gunAnim.SetTrigger("reload");
+            StartCoroutine(waitReloadPlay());
+            currAmmo = maxAmmo;
         }
 
         if (Input.GetKey("q")) 
@@ -88,6 +118,14 @@ public class GunController : MonoBehaviour
             StartCoroutine(electricImg());
            
         }
+
+    }
+
+
+    IEnumerator waitReloadPlay() 
+    {
+        yield return new WaitForSeconds(.7f);
+        reloadAudio.Play();
 
     }
 

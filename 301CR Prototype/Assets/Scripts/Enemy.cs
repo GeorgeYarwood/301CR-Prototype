@@ -80,6 +80,7 @@ public class Enemy : MonoBehaviour
                 
                 
                 anim.SetTrigger("attack");
+                agent.SetDestination(agent.transform.position);
 
                 if (distance > attackdist)
                 {
@@ -117,14 +118,14 @@ public class Enemy : MonoBehaviour
     IEnumerator waitForNextHit() 
     {
         canHit = false;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
         canHit = true;
     }
  
 
     private void OnCollisionStay(Collision collision)
     {
-        if(collision.transform.tag == "Player" && anim.GetCurrentAnimatorStateInfo(0).IsName("enemyAttack") && canHit) 
+        if(collision.transform.tag == "Player" && canHit) 
         {
             currState = States.Attacking; 
 
