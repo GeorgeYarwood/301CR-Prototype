@@ -26,7 +26,10 @@ public class GunController : MonoBehaviour
 
     //Audio source
     public AudioSource gunAudio;
+    public AudioSource elecAudio;
 
+    public GameObject elecImg1;
+    public GameObject elecImg2;
 
     // Start is called before the first frame update
     void Start()
@@ -37,8 +40,7 @@ public class GunController : MonoBehaviour
         //Get animator
         gunAnim = this.GetComponent<Animator>();
 
-        //Get audio source
-        gunAudio = this.GetComponent<AudioSource>();
+       
         
     }
 
@@ -79,6 +81,29 @@ public class GunController : MonoBehaviour
             gunAnim.SetTrigger("reload");
         }
 
+        if (Input.GetKey("q")) 
+        {
+            //Play audio
+            elecAudio.Play();
+            StartCoroutine(electricImg());
+           
+        }
+
+    }
+
+    void killEnemies() 
+    {
+        //Find all enemies in scene
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemy");
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            //Kill all enemies
+            Destroy(enemies[i]);
+
+            
+
+        }
     }
 
     IEnumerator shootWait() 
@@ -86,5 +111,25 @@ public class GunController : MonoBehaviour
         canShoot = false;
         yield return new WaitForSeconds(shootTime);
         canShoot = true;
+    }
+
+    IEnumerator electricImg() 
+    {
+        elecImg1.SetActive(true);
+        yield return new WaitForSeconds(1);
+        killEnemies();
+        elecImg1.SetActive(false);
+        elecImg2.SetActive(true);
+        yield return new WaitForSeconds(1);
+        killEnemies();
+
+        elecImg2.SetActive(false);
+        elecImg1.SetActive(true);
+        yield return new WaitForSeconds(1);
+        killEnemies();
+
+        elecImg1.SetActive(false);
+
+
     }
 }
