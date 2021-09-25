@@ -30,20 +30,21 @@ public class GunController : MonoBehaviour
     public AudioSource elecAudio;
     public AudioSource reloadAudio;
     public AudioSource errAudio;
+    public AudioSource reload2Audio;
 
     public GameObject reloadMsg;
 
     public GameObject elecImg1;
     public GameObject elecImg2;
 
-    int maxAmmo = 7;
-    int currAmmo;
+    static public int maxAmmo = 7;
+    static public int currAmmo;
 
     float coolDwn = 100f;
 
     float currDwn;
 
-    bool cooldown = false;
+    static public bool cooldown = false;
 
     public Text ammoTxt;
 
@@ -97,7 +98,7 @@ public class GunController : MonoBehaviour
             reloadMsg.SetActive(false);
 
         }
-        if (Input.GetMouseButtonDown(0) && !gunAnim.GetCurrentAnimatorStateInfo(0).IsName("gunFire") && !gunAnim.GetCurrentAnimatorStateInfo(0).IsName("gunReload")  && currAmmo > 0)
+        if (Input.GetMouseButtonDown(0) && !gunAnim.GetCurrentAnimatorStateInfo(0).IsName("gunFire") && !gunAnim.GetCurrentAnimatorStateInfo(0).IsName("gunReload") && !gunAnim.GetCurrentAnimatorStateInfo(0).IsName("gunReload2") && currAmmo > 0)
         {
             currAmmo -= 1;
 
@@ -134,8 +135,17 @@ public class GunController : MonoBehaviour
         
         if (Input.GetKeyDown("r")) 
         {
-            gunAnim.SetTrigger("reload");
-            reloadAudio.Play();
+            if(Random.Range(1, 3) == 1)
+            {
+                gunAnim.SetTrigger("reload");
+                reloadAudio.Play();
+
+            }
+            else 
+            {
+                gunAnim.SetTrigger("reload2");
+                reload2Audio.Play();
+            }
 
             currAmmo = maxAmmo;
         }
