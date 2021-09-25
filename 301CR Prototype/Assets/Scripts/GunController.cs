@@ -39,8 +39,17 @@ public class GunController : MonoBehaviour
     int maxAmmo = 7;
     int currAmmo;
 
+    float coolDwn = 100f;
+
+    float currDwn;
+
+    bool cooldown = false;
+
     public Text ammoTxt;
 
+    public Slider coolDwnSlid;
+
+    public GameObject coolDwnImg;
 
     // Start is called before the first frame update
     void Start()
@@ -58,6 +67,25 @@ public class GunController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!cooldown) 
+        {
+            currDwn = coolDwn;
+            coolDwnImg.SetActive(false);
+
+        }
+
+
+        if (cooldown) 
+        {
+            coolDwnSlid.value = currDwn;
+            coolDwnImg.SetActive(true);
+            currDwn -= Time.deltaTime;
+            if (currDwn <= 0) 
+            {
+                cooldown = false;
+            }
+        }
+
         ammoTxt.text = "AMO: " + currAmmo.ToString();
 
         if(currAmmo <= 0) 
@@ -112,12 +140,18 @@ public class GunController : MonoBehaviour
             currAmmo = maxAmmo;
         }
 
-        if (Input.GetKeyDown("q")) 
+        if (Input.GetKeyDown("q") && !cooldown) 
         {
             //Play audio
             elecAudio.Play();
+            cooldown = true;
             StartCoroutine(electricImg());
            
+        }
+        else if(Input.GetKeyDown("q"))
+        {
+            errAudio.Play();
+
         }
 
     }
@@ -141,6 +175,7 @@ public class GunController : MonoBehaviour
         }
     }
 
+  
     IEnumerator shootWait() 
     {
         canShoot = false;
